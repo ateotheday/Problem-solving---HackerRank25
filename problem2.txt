@@ -1,0 +1,134 @@
+/******
+Problem Statement – Rocky is a software engineer and he is creating his own operating system called “myFirst os”. 
+my First os  is a GUI (Graphical user interface) based operating system where everything is stored in files and folders.
+ He is facing issues on  creating unique folder names for the operating system . 
+Help rocky to create the unique folder name for it’s os.
+If folder name already exists in the system and integer number is added at the name to make it unique. 
+The integer added starts with 1 and is incremented by 1 for each new request of an existing folder name.
+ Given a list of folder names , process all requests and return an array of corresponding folder names.
+
+Example  :
+
+n=5
+foldername= [‘home’ , ‘myfirst’ ,’downloads’, ‘myfirst’, ‘myfirst’]
+foldername[0]= ‘home’ is unique.
+foldername[1]= ‘myfirst’ is unique.
+foldername [2]=’downloads’ is unique.
+foldername[3]=’myfirst’ already exists in our system. So Add1 at the end of the folder name i.e foldername[3]=”myfirst1″
+foldername[4]=’myfirst’ also already exists in our system.So add 2 at the end of the folder name i.e. foldername[4]=”myfirst2″.
+folderNameSystem function has the following parameters
+
+   string foldername[n]: an array of folder name string in the order requested
+Returns:
+
+String[n]:  an array of strings usernames in the order assigned
+Constraints :
+
+    1<=n<=10^4
+    1<=length of foldername[i]<20
+    foldername[i] contains only lowercase english letter in the range ascii[a-z]
+Input Format:
+
+The first line contains an integer n , denoting the size of the array usernames
+Each line i of the n subsequent lines (where i<=0<=n) contains a string usernames[i] 
+representing a username request in the order received.
+Sample case :
+
+4
+
+home 
+
+download
+
+first
+
+first
+
+Sample Output :
+
+home
+
+download
+
+first
+
+first1
+
+SOLUTION.
+As you all might have guessed, this is a problem in which we utilize the HashMap concept. 
+I have solved it in Java.
+First of all, by analyzing the question, the output we want is a unique file name.
+For example, if the files are :
+home
+dir
+home
+home
+dir
+files
+
+The output should be:
+home
+dir
+home1
+home2
+dir2
+files
+Here, the naming conflict is solved.
+I initialized a HashMap with a key corresponding to the name of the file and a value corresponding to the occurrence of the file in the HashMap, which is initialized to 0, as no files are there in the HashMap at the beginning.
+So the approach that I have used is to read the file names as a string from the user and check if it already exists in the HashMap.
+If it does not exist, we add the corresponding file name and its value as 0.
+if it does exist, 
+There are two cases:
+1) The file name is present in the hashmap, like if we got the first input as home and the next input is also home, then we have to make it home1. This is the base case.
+2)
+When we get the input as in the above case, but the next filename is home1 itself. That is an edge case.
+ If we approach it using the normal method, there will be repetition.
+Hence, we would first need to store the file name in a variable (here 'newfolder), then check if the newFolder is already present in the hashmap.
+ If present, the count is incremented, so when a file named first1  is again found, it would be named as first12, which is the correct way of naming it.
+The file count is updated. 
+Then the new folder value is added to the HashMap with a value of 0. 
+To the list, we add the computed new file name.
+*****/
+
+
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the number of files:");
+        int n = sc.nextInt();
+        sc.nextLine(); // consume leftover newline
+
+        HashMap<String, Integer> FolderN = new HashMap<>();
+        ArrayList<String> List1 = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            String key = sc.nextLine();
+
+            if (!FolderN.containsKey(key)) {
+                FolderN.put(key, 0);
+                List1.add(key);
+            } else {
+                int count = FolderN.get(key) + 1;
+                String newFolder = key + count;
+
+                // Ensure uniqueness
+                while (FolderN.containsKey(newFolder)) {
+                    count++;
+                    newFolder = key + count;
+                }
+
+                FolderN.put(key, count);   // update original folder count
+                FolderN.put(newFolder, 0); // mark new folder as used
+                List1.add(newFolder);
+            }
+        }
+
+        // Print the folder names line by line
+        for (String f : List1) {
+            System.out.println(f);
+        }
+    }
+}
