@@ -1,0 +1,60 @@
+/*****************************
+Problem Statement – Given a sting , return the character that appears the minimum number of times in the string. The string will contain only ascii characters, from the ranges (“a”-”z”,”A”-”Z”,0-9), and case matters . If there is a tie in the minimum number of times a character appears in the string return the character that appears first in the string.
+
+Input Format:
+Single line with no space denoting the input string.
+
+Output Format:
+Single character denoting the least frequent character.
+
+Constraints:
+Length of string <=10^6
+
+Sample Input:
+cdadcda
+
+Sample Output:
+c
+
+SOLUTION
+In this particular problem, we have to find:
+1) The occurrence of every character in a string
+2) return the character that occurred the minimum times.
+3) If more than one character with the minimum count is there, then return the character which occurs first.
+
+In order to implement this we first read the string into the variable str and then store it in a character array named ch. 
+To implement it we would need the ascii value corresponding to each of the character as we have to find the minimum occurred character. We initialize an integer array called 'arr' with 256 as the length, the length of ascii values with respect to each character in the English alphabet.
+then we iterate through the character array and whenever a character is encountered, the index corresponding to that character is incremented in the integer array 'arr'.
+We have got the count of each of the character now, now we want the minimum value from the array 'arr'.
+for that, iterate through the character array, update the minimum variable with the minimum value.
+then for checking the 3rd condition. We compare the min value with the 'arr' elements. Corresponding to which value does the min value comes first is taken. Then print the character.
+
+*************************/
+
+import java.util.*;
+public class Main
+{
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		String str=sc.nextLine();
+		char[] ch=str.toCharArray();
+		int[] arr=new int[256];
+		for(char c:ch){
+		    arr[c]++;
+		}
+		int min=Integer.MAX_VALUE;
+		for(char c:ch)
+		{
+		   min=Math.min(min,arr[c]);
+		}
+		for(char c:ch)
+		{
+		    if(min==arr[c])
+		    {
+		    System.out.println(c);
+		    break;
+		}
+		}
+		
+	}
+}
