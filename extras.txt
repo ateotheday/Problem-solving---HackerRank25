@@ -1,0 +1,57 @@
+//EXTRAS
+
+/*ANAGRAM CODE*/
+class Solution {
+    public static boolean areAnagrams(String s1, String s2) {
+      char[] str1=s1.toCharArray();
+      char[] str2=s2.toCharArray();
+      int[] arr1=new int[256];
+      int[] arr2=new int[256];
+      for(int i=0;i<s1.length() &&i< s2.length();i++)
+      {
+         arr1[str1[i]]++;
+         arr2[str2[i]]++;
+      }
+      
+      if(str1.length!=str2.length)
+         return false;
+      for(int i=0;i<256;i++)
+      {
+          if(arr1[i]!=arr2[i])
+          {
+              return false;
+          }
+        
+      }
+        return true;
+      }
+}
+
+
+/*ISOMORPHIC CODE*/
+class Solution {
+    public static boolean isIsomorphic(String s, String t) {
+        if(s.length() != t.length()) return false;
+
+        int[] map_s_to_t = new int[256];  // mapping from s → t
+        int[] map_t_used = new int[256];  // which characters in t are already mapped
+
+        // initialize mapping array with -1 to indicate "not mapped yet"
+        for(int i = 0; i < 256; i++) map_s_to_t[i] = -1;
+
+        for(int i = 0; i < s.length(); i++) {
+            int c1 = s.charAt(i); // current char in s
+            int c2 = t.charAt(i); // current char in t
+
+            if(map_s_to_t[c1] == -1) { // s[i] not mapped yet
+                if(map_t_used[c2] == 1) return false; // t[i] already mapped by some other char
+                map_s_to_t[c1] = c2;  // map s[i] → t[i]
+                map_t_used[c2] = 1;   // mark t[i] as used
+            } else {
+                if(map_s_to_t[c1] != c2) return false; // s[i] already mapped to a different char
+            }
+        }
+
+        return true; // all characters mapped consistently
+    }
+}
